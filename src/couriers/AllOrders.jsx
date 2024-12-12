@@ -73,16 +73,22 @@ const LocationMarker = ({ setUserLocation }) => {
 
 const fetchCoordinates = async (address) => {
   try {
+    if (!address || address.trim() === "") {
+      throw new Error("Invalid address provided");
+    }
+
     const result = await axios.get(
       `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(address)}`
     );
+
     if (result.data.length > 0) {
       return {
         latitude: parseFloat(result.data[0].lat),
         longitude: parseFloat(result.data[0].lon),
       };
+    } else {
+      throw new Error(`No coordinates found for address: ${address}`);
     }
-    throw new Error("No coordinates found");
   } catch (error) {
     console.error("Geocoding error:", error.message);
     return null;
