@@ -23,7 +23,7 @@ const app = express();
 const server = http.createServer(app);
 const io = new socketIo(server, {
   cors: {
-    origin: "http://localhost:5173", // Change this to the frontend URL
+    origin: ["http://localhost:5173", "https://jrsexpress.onrender.com"], // Change this to the frontend URL
     methods: ["GET", "POST"],
   },
 });
@@ -38,7 +38,7 @@ mongoose
 // Middleware
 app.use(
   cors({
-    origin: ["http://localhost:5173"],
+    origin: ["http://localhost:5173", "https://jrsexpress.onrender.com"],
     methods: ["POST", "GET", "PUT", "DELETE"],
     allowedHeaders: ["Content-Type", "Authorization"],
     credentials: true,
