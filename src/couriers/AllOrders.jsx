@@ -206,11 +206,11 @@ function AllOrders({ currentAuth }) {
           <p className="text-center mt-32 text-xl font-poppins">No Orders</p>
         </>
       ) : (
-        <ScrollArea className="h-[650px] border px-2 w-full shadow-xl  mb-10 rounded-md">
+        <ScrollArea className="h-[650px] border px-0 lg:px-2 ssm:w-[370px] lg:w-full shadow-xl  mb-10 rounded-md">
           {orders.map((entry, index) => (
             <div
               key={entry._id}
-              className="flex gap-x-3 border-2 mt-2 border-gray-900 border-t-0 border-l-0 border-r-0 pb-1 mb-5"
+              className="flex ssm:gap-x-0 lg:gap-x-3 border-2 mt-2 border-gray-900 border-t-0 border-l-0 border-r-0 pb-1 mb-5"
             >
               <div className="relative last:after:hidden after:absolute after:top-7 after:bottom-0 after:start-3.5 after:w-px after:-translate-x-[0.5px] after:bg-gray-200 dark:after:bg-neutral-700">
                 <div className="relative z-10 size-7 flex justify-center items-center">
@@ -239,7 +239,7 @@ function AllOrders({ currentAuth }) {
                     <line x1="10" x2="8" y1="9" y2="9"></line>
                   </svg>{" "}
                   {entry.RatesAndServices}
-                  <p className="mt-1 relative left-32 text-sm font-quicksand text-gray-100 bg-emerald-800 px-2 rounded-md dark:text-neutral-400">
+                  <p className="mt-1 relative ssm:left-20 lg:left-32 text-sm font-quicksand text-gray-100 bg-emerald-800 px-2 rounded-md dark:text-neutral-400">
                     P {entry.total}
                   </p>
                 </h3>
@@ -254,7 +254,7 @@ function AllOrders({ currentAuth }) {
                   />
                   {entry.customerName}
                 </button>
-                <div className="flex gap-2">
+                <div className="flex gap-2 ssm:w-64 lg:w-80">
                   <p className="mt-1 text-xs  text-gray-600 dark:text-neutral-400">
                     Pick point:
                   </p>
@@ -262,7 +262,7 @@ function AllOrders({ currentAuth }) {
                     {entry.pickPoint}
                   </p>
                 </div>
-                <div className="flex gap-2 ">
+                <div className="flex gap-2 ssm:w-64 lg:w-80">
                   <p className="mt-1 text-xs text-gray-600 dark:text-neutral-400">
                     Destination:
                   </p>
@@ -322,7 +322,7 @@ function AllOrders({ currentAuth }) {
               </div>
               {coordinates && selectedOrder && (
                 <Dialog open={isDrawerOpen} onOpenChange={setDrawerOpen}>
-                  <DialogContent className="bg-gray-200 font-poppins w-screen h-screen overflow-y-scroll">
+                  <DialogContent className="bg-gray-200 font-poppins ssm:w-full lg:w-screen h-screen overflow-y-scroll">
                     <DialogHeader>
                       <DialogTitle className="flex text-sm justify-center">
                         Order Information <ReceiptTextIcon className="p-1" />
@@ -350,7 +350,7 @@ function AllOrders({ currentAuth }) {
                           <p className="font-poppins">View Details</p>
                         </AccordionTrigger>
                         <AccordionContent>
-                          <div className="text-sm space-y-1 mt-3 border-black border-2 border-t-0 border-l-0 border-r-0 pb-2">
+                          <div className="text-sm ssm:w-80 lg:w-full space-y-1 mt-3 border-black border-2 border-t-0 border-l-0 border-r-0 pb-2">
                             <h3 className="flex gap-x-1.5 font-semibold text-gray-800 dark:text-white ">
                               <svg
                                 className="shrink-0 size-4 mt-1"

@@ -52,7 +52,7 @@ function App() {
   }, [baseUrl]);
 
   return (
-    <div>
+    <div className="">
       <header className="mb-16">
         <Navigation currentAuth={currentAuth} />
       </header>
@@ -105,7 +105,7 @@ function App() {
           element={<TobeDeployed currentAuth={currentAuth} />}
         />
       </Routes>
-      <footer className="mt-32">
+      <footer className="">
         <Footer currentAuth={currentAuth} />
       </footer>
     </div>

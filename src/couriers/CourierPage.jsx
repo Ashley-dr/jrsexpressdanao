@@ -30,6 +30,8 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { Button } from "@/components/ui/button";
 import CurrentOrders from "./CurrentOrders.jsx";
+import { ArrowUp } from "lucide-react";
+import { useLocation } from "react-router-dom";
 function CourierPage({ currentAuth }) {
   const baseUrl = import.meta.env.VITE_SERVER_URL;
   const [loading, setLoading] = useState(false);
@@ -117,13 +119,24 @@ function CourierPage({ currentAuth }) {
     }
   };
 
+  const location = useLocation();
+  useEffect(() => {
+    if (location.hash === "#item") {
+      const element = document.getElementById("item");
+      if (element) {
+        element.scrollIntoView({ behavior: "smooth", block: "start" });
+      }
+    }
+  }, [location]);
+
   return (
-    <div className="max-w-full font-poppins">
+    <div className="max-w-full  font-poppins ">
       {/* <ToastContainer /> */}
 
       <form
+        id="item"
         onSubmit={updateStatus}
-        className="mx-10 relative top-9 flex items-center bg-gray-800 text-white gap-2 w-[390px]  px-2 p-1 rounded-md"
+        className="mx-10 relative top-9 flex items-center bg-gray-800 text-white gap-2 lg:w-[390px]  px-2 p-1 rounded-md"
       >
         <p>Status: </p>
 
@@ -132,7 +145,7 @@ function CourierPage({ currentAuth }) {
           value={status}
           required
         >
-          <SelectTrigger className="w-[500px] ">
+          <SelectTrigger className=" ">
             <SelectValue
               placeholder={currentAuth?.status || "Select Status"}
               className="bg-black"
@@ -154,10 +167,10 @@ function CourierPage({ currentAuth }) {
         </Button>
       </form>
 
-      <div className="grid grid-rows-2 grid-flow-col">
+      <div className="grid ssm:grid-rows-1 lg:grid-rows-2 lg:grid-flow-col">
         <div className="row-span-3 justify-items-center mt-10">
           {" "}
-          <Tabs defaultValue="neworders" className="w-[450px]">
+          <Tabs defaultValue="neworders" className="lg:w-[450px]">
             <TabsList className="w-full gap-10">
               <TabsTrigger
                 value="neworders"
@@ -180,8 +193,13 @@ function CourierPage({ currentAuth }) {
             </TabsContent>
           </Tabs>
         </div>
-
-        <div className="row-span-2 col-span-12 h-32  z-40">
+        <a
+          href="#item"
+          className="fixed  bg-[#8080804a] bottom-4 right-4 flex items-center justify-center  p-2 rounded-full z-50 shadow-lg hover:bg-[#bababad0] transition duration-300 ease-in-out"
+        >
+          <ArrowUp className="text-2xl" />
+        </a>
+        <div className="row-span-2 col-span-12 h-32  z-40 ssm:mb-[700px] lg:mb-0">
           <p className="text-center mb-10  font-quicksand font-thin ">
             A Real time map view to show Available Customers all around the
             world.

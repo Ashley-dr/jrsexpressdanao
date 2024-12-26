@@ -7,7 +7,7 @@ import Footer from "./Footer";
 
 function Home({ currentAuth }) {
   return (
-    <div>
+    <div className="mb-44">
       <figure>
         <p className="text-center text-4xl font-bold font-poppins grid justify-center items-center h-80">
           Fast and Reliable Couriers Servicess with <br /> JRS Express - Danao

@@ -8,7 +8,7 @@ import jrslogo from "../assets/jrslogo.png";
 import { Button } from "@/components/ui/button";
 function Footer({ currentAuth }) {
   return (
-    <div className="mb-32">
+    <div className="mb-32 ">
       {" "}
       <figure>
         <article className="space-y-10">
@@ -58,11 +58,11 @@ function Footer({ currentAuth }) {
             </div>
 
             {/* Links */}
-            <ul className="flex flex-col md:flex-row gap-4 text-sm">
+            <ul className="flex flex-col ssm:flex-row md:flex-row gap-4 text-sm mb-10">
               <li>
                 <a
                   href="#"
-                  className="hover:text-gray-300 transition duration-200"
+                  className="hover:text-gray-300 transition duration-200 "
                 >
                   About Us
                 </a>

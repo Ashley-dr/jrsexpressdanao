@@ -171,7 +171,7 @@ function CurrentOrders({ currentAuth }) {
             .map((entry, index) => (
               <div
                 key={entry._id}
-                className="flex gap-x-3 mt-2  border-b-2 border-black"
+                className="flex ssm:gap-x-0 lg:gap-x-3 mt-2  border-b-2 border-black  ssm:w-[350px] lg:w-full"
               >
                 <div className="relative last:after:hidden after:absolute after:top-7 after:bottom-0 after:start-3.5 after:w-px after:-translate-x-[0.5px] after:bg-gray-200 dark:after:bg-neutral-700">
                   <div className="relative z-10 size-7 flex justify-center items-center">
@@ -217,7 +217,7 @@ function CurrentOrders({ currentAuth }) {
                     <p className="mt-1 text-xs  text-gray-600 dark:text-neutral-400">
                       Pick point:
                     </p>
-                    <p className="mt-1 text-sm break-words w-80 text-gray-900 dark:text-neutral-400">
+                    <p className="mt-1 text-sm break-words ssm:w-64 lg:w-80 text-gray-900 dark:text-neutral-400">
                       {entry.pickPoint}
                     </p>
                   </div>
@@ -225,7 +225,7 @@ function CurrentOrders({ currentAuth }) {
                     <p className="mt-1 text-xs text-gray-600 dark:text-neutral-400">
                       Destination:
                     </p>
-                    <p className="mt-1 text-sm break-words w-80 text-gray-800 dark:text-neutral-400">
+                    <p className="mt-1 text-sm break-words ssm:w-64 lg:w-80 text-gray-800 dark:text-neutral-400">
                       {entry.destination}
                     </p>
                   </div>
@@ -233,7 +233,7 @@ function CurrentOrders({ currentAuth }) {
                     <p className="mt-1 text-sm text-gray-600 dark:text-neutral-400">
                       Distances:
                     </p>
-                    <p className="mt-1 text-sm break-words w-80 text-gray-800 dark:text-neutral-400 ">
+                    <p className="mt-1 text-sm break-words ssm:w-64 lg:w-80 text-gray-800 dark:text-neutral-400 ">
                       {entry.distance} km
                     </p>
                   </div>

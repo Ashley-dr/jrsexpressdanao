@@ -291,9 +291,9 @@ function CustomerBookedTicket({ currentAuth }) {
             .map((entry, index) => (
               <div
                 key={entry._id}
-                className="flex gap-x-3 mt-2  border-b-2 border-black"
+                className="flex ssm:gap-x-0 lg:gap-x-3 mt-2  border-b-2 border-black  ssm:w-[370px] lg:w-full "
               >
-                <div className="relative last:after:hidden after:absolute after:top-7 after:bottom-0 after:start-3.5 after:w-px after:-translate-x-[0.5px] after:bg-gray-200 dark:after:bg-neutral-700">
+                <div className=" relative last:after:hidden after:absolute after:top-7 after:bottom-0 after:start-3.5 after:w-px after:-translate-x-[0.5px] after:bg-gray-200 dark:after:bg-neutral-700">
                   <div className="relative z-10 size-7 flex justify-center items-center">
                     <div className="size-2 rounded-full bg-gray-400 dark:bg-neutral-600"></div>
                   </div>
@@ -333,15 +333,15 @@ function CustomerBookedTicket({ currentAuth }) {
                     />
                     {entry.customerName}
                   </button>
-                  <div className="flex gap-2">
-                    <p className="mt-1 text-xs  text-gray-600 dark:text-neutral-400">
+                  <div className="flex gap-2 ssm:w-[300px] lg:w-full">
+                    <p className="mt-1 text-xs   text-gray-600 dark:text-neutral-400">
                       Pick point:
                     </p>
                     <p className="mt-1 text-sm break-words w-80 text-gray-900 dark:text-neutral-400">
                       {entry.pickPoint}
                     </p>
                   </div>
-                  <div className="flex gap-2">
+                  <div className="flex gap-2 ssm:w-[300px] lg:w-full">
                     <p className="mt-1 text-xs text-gray-600 dark:text-neutral-400">
                       Destination:
                     </p>
@@ -418,7 +418,7 @@ function CustomerBookedTicket({ currentAuth }) {
 
                     <Button
                       onClick={() => setDialogOpen(entry._id)}
-                      className="p-3  bg-red-500 transition hover:scale-105 hover:bg-red-900 hover:text-white"
+                      className="p-3 ssm:text-xs lg:text-sm  bg-red-500 transition hover:scale-105 hover:bg-red-900 hover:text-white"
                     >
                       Cancel Delivery
                     </Button>
