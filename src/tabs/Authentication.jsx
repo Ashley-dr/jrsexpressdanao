@@ -48,13 +48,15 @@ function Authentication() {
         toast.success(data.message, { position: "top-left", duration: 5000 });
 
         if (data.data.isCourier) {
-          if (data.data.isDeployed === false) {
-            navigate("/ToBeDeployed");
-            window.location.reload();
-          } else {
-            navigate("/CourierPage");
-            window.location.reload();
-          }
+          // if (data.data.isDeployed) {
+          //   navigate("/ToBeDeployed");
+          //   window.location.reload();
+          // } else {
+          //   navigate("/CourierPage");
+          //   window.location.reload();
+          // }
+          navigate("/CourierPage");
+          window.location.reload();
         } else if (data.data.isUser) {
           navigate("/CustomerPage");
           window.location.reload();

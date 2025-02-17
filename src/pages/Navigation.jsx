@@ -47,7 +47,17 @@ function Navigation({ currentAuth }) {
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button className="bg-gray-700 text-white px-3 py-2 rounded-md ">
-                  {currentAuth.fullname || "Profile"}
+                  {currentAuth.isUser === true ? (
+                    <>
+                      <p>{currentAuth.fullname || "Profile"}</p>|
+                      <p className="text-sm font-thin">Logged as User</p>
+                    </>
+                  ) : (
+                    <>
+                      <p>{currentAuth.fullname || "Profile"}</p>|
+                      <p className="text-sm font-thin">Logged as Rider</p>
+                    </>
+                  )}
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent className="mt-2 space-y-1 bg-white">
