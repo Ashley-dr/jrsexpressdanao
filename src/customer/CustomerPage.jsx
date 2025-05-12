@@ -65,7 +65,7 @@ function CustomerPage({ currentAuth }) {
   return (
     <div className="max-w-full font-poppins">
       {/* <p className="relative left-16 top-10">Order for an Delivery</p> */}
-      <div className=" grid ssm:grid-rows-1 lg:grid-rows-2 lg:grid-flow-col ">
+      <div className="lg:h-[900px] grid ssm:grid-rows-1 lg:grid-rows-2 lg:grid-flow-col ">
         <a
           href="#item"
           className="fixed  bg-[#8080804a] bottom-4 right-4 flex items-center justify-center  p-2 rounded-full z-50 shadow-lg hover:bg-[#bababad0] transition duration-300 ease-in-out"

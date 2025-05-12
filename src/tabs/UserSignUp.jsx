@@ -74,11 +74,13 @@ function UserSignUp() {
     setShowPassword((prev) => !prev);
   };
   return (
-    <div className=" font-poppins grid justify-self-center">
+    <div className=" font-poppins grid justify-self-center mt-20 pb-20">
       <ToastContainer />
       <Card className="ssm:w-[350px] lg:w-[400px]">
         <CardHeader>
-          <CardTitle>Create Account</CardTitle>
+          <CardTitle className="text-[#008000] font-bold">
+            Create Account
+          </CardTitle>
           <CardDescription>
             To Create account fill up form below.
           </CardDescription>

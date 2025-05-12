@@ -53,7 +53,7 @@ function App() {
 
   return (
     <div className="">
-      <header className="mb-16">
+      <header className="">
         <Navigation currentAuth={currentAuth} />
       </header>
       <Routes>

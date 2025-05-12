@@ -75,11 +75,11 @@ function Authentication() {
     setShowPassword((prev) => !prev);
   };
   return (
-    <div className=" font-poppins grid justify-self-center">
+    <div className=" font-poppins grid justify-self-center items-center mt-20 pb-20 ">
       <ToastContainer />
       <Card className="ssm:w-[350px] lg:w-[400px]">
         <CardHeader>
-          <CardTitle>Sign in</CardTitle>
+          <CardTitle className="text-[#008000] font-bold">Sign in</CardTitle>
           <CardDescription>Log in to explore things</CardDescription>
         </CardHeader>
         <CardContent>

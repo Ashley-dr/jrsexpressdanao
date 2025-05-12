@@ -2,23 +2,23 @@
 /* eslint-disable no-unused-vars */
 import TobeDeployed from "@/couriers/TobeDeployed";
 import { LocateIcon, Mail, Phone } from "lucide-react";
+import { RiFacebookFill } from "react-icons/ri";
+import { CiInstagram } from "react-icons/ci";
+import { FaTwitter } from "react-icons/fa";
 import React from "react";
 import { Link } from "react-router-dom";
 import jrslogo from "../assets/jrslogo.png";
 import { Button } from "@/components/ui/button";
 function Footer({ currentAuth }) {
   return (
-    <div className="mb-32 ">
+    <div className="mt-32 space-y-10 font-poppins lg:w-[100] grid justify-self-center">
       {" "}
       <figure>
         <article className="space-y-10">
-          <p className="text-center text-xs  font-poppins grid justify-center items-center">
-            Our customer service team is available to help you with any queries.
-          </p>
-          <p className="text-center text-4xl font-bold font-poppins grid justify-center items-center">
+          <p className="text-center text-4xl font-bold font-poppins grid justify-center items-center text-[#008000]">
             Contact Us
           </p>
-          <p className="text-center  font-poppins grid justify-center items-center ">
+          <p className="text-center  font-poppins grid justify-center items-center text-[#303a30]">
             Have a question or need assistance? Reach out to us!
           </p>
         </article>
@@ -49,69 +49,75 @@ function Footer({ currentAuth }) {
           </div>
         </div>
       </figure>
-      <figure>
-        <div className="container mx-auto px-4 mt-10">
-          <div className="flex flex-col md:flex-row justify-between items-center">
-            {/* Logo */}
-            <div className="mb-4 md:mb-0 flex items-center">
-              <img src={jrslogo} alt="Logo" className="w-44 h-32 mr-2" />
-            </div>
-
-            {/* Links */}
-            <ul className="flex flex-col ssm:flex-row md:flex-row gap-4 text-sm mb-10">
+      <div className="mb-10">
+        <div className="grid xs:grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 justify-items-center mb-5">
+          <div className="space-y-2">
+            <p className="font-bold">About Us</p>
+            <ul className="space-y-2">
               <li>
-                <a
-                  href="#"
-                  className="hover:text-gray-300 transition duration-200 "
-                >
-                  About Us
-                </a>
+                <a href="#">Company Profile</a>
               </li>
               <li>
-                <a
-                  href="#"
-                  className="hover:text-gray-300 transition duration-200"
-                >
-                  Services
-                </a>
+                <a href="#">Our History</a>
               </li>
               <li>
-                <a
-                  href="#"
-                  className="hover:text-gray-300 transition duration-200"
-                >
-                  Contact
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#"
-                  className="hover:text-gray-300 transition duration-200"
-                >
-                  Privacy Policy
-                </a>
+                <a href="#">Careers</a>
               </li>
             </ul>
-
-            {/* Social Media */}
           </div>
-          <div className="">
-            <div>
-              <input type="text" className="border-2 border-black h-10" />
-              <Button className="border rounded-none bottom-0.5 relative bg-gray-950 text-white font-quicksand">
-                Send
-              </Button>
-            </div>
-
-            <p className="text-xs font-poppins">Email us</p>
+          <div className="space-y-2">
+            <p className="font-bold">Services</p>
+            <ul className="space-y-2">
+              <li>
+                <a href="#">Domestic Express</a>
+              </li>
+              <li>
+                <a href="#">International Express</a>
+              </li>
+              <li>
+                <a href="#">Cargo Forwarding</a>
+              </li>
+              <li>
+                <a href="#">Cash on Delivery</a>
+              </li>
+            </ul>
           </div>
-
-          <p className=" text-xs mt-4 text-gray-400">
-            &copy; {new Date().getFullYear()} JRS Express - Danao. All rights
-            reserved.
-          </p>
+          <div className="space-y-2">
+            <p className="font-bold">Support</p>
+            <ul className="space-y-2">
+              <li>
+                <a href="#">Track & Trace</a>
+              </li>
+              <li>
+                <a href="#">Rates</a>
+              </li>
+              <li>
+                <a href="#">FAQ</a>
+              </li>
+              <li>
+                <a href="#">Contact Us</a>
+              </li>
+            </ul>
+          </div>
         </div>
-      </figure>
+        <div className="grid justify-self-center">
+          <div className="flex flex-row gap-5">
+            <a href="#">
+              <RiFacebookFill size={32} />
+            </a>
+            <a href="#">
+              <FaTwitter size={32} />
+            </a>
+            <a href="#">
+              <CiInstagram size={32} />
+            </a>
+          </div>
+        </div>
+        <p className="flex justify-self-center text-xs mt-4 text-gray-400 mb-10">
+          &copy; {new Date().getFullYear()} JRS Express - Danao. All rights
+          reserved.
+        </p>
+      </div>
     </div>
   );
 }
