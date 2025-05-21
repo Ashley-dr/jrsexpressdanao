@@ -55,32 +55,29 @@ function Navigation({ currentAuth }) {
               </Link>
             </div>
             <div className="text-center w-full ">
-              <Link
-                to={"/"}
+              <a
+                href="#rates"
                 className="text-center px-5 p-1 transition-colors hover:text-green-700 hover:border-2 hover:border-teal-600 rounded-md "
-                prefetch={false}
               >
                 Rates
-              </Link>
+              </a>
             </div>
 
             <div className="text-center w-full ">
-              <Link
-                to={"/"}
+              <a
+                href="#scope"
                 className="text-center px-5 p-1 transition-colors hover:text-green-700 hover:border-2 hover:border-teal-600 rounded-md "
-                prefetch={false}
               >
                 Scope
-              </Link>
+              </a>
             </div>
             <div className="text-center w-full ">
-              <Link
-                to={"/"}
+              <a
+                href="#services"
                 className="text-center px-5 p-1 transition-colors hover:text-green-700 hover:border-2 hover:border-teal-600 rounded-md "
-                prefetch={false}
               >
-                Services <span className="">▼</span>
-              </Link>
+                Services
+              </a>
             </div>
           </nav>
         </div>
