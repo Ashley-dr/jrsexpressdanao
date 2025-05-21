@@ -1,347 +1,289 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable no-unused-vars */
-import React, { useState } from "react";
-import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectLabel,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogClose,
-  DialogTitle,
-} from "@/components/ui/dialog";
-import { MapContainer, TileLayer, Marker, useMapEvents } from "react-leaflet";
-import "leaflet/dist/leaflet.css";
-import L from "leaflet";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
-import axios from "axios";
-import { useNavigate } from "react-router-dom";
-import { Link } from "react-router-dom";
-import {
-  CheckCircle2Icon,
-  Hand,
-  ImageIcon,
-  Loader2,
-  LoaderPinwheelIcon,
-} from "lucide-react";
-import { CardBody } from "@chakra-ui/react";
+import React, { useState, useEffect } from "react";
 
-delete L.Icon.Default.prototype._getIconUrl;
-L.Icon.Default.mergeOptions({
-  iconUrl:
-    "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon.png",
-  shadowUrl:
-    "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png",
-});
-
-const convertCoordsToAddress = async (coords) => {
-  const { lat, lng } = coords;
-  try {
-    // Use Google Maps API, Nominatim, or any reverse geocoding service
-    const response = await axios.get(
-      `https://nominatim.openstreetmap.org/reverse`,
-      {
-        params: {
-          lat,
-          lon: lng,
-          format: "json",
-        },
-      }
-    );
-
-    const address = response.data.display_name;
-    return address || `Lat: ${lat}, Lng: ${lng}`;
-  } catch (error) {
-    console.error("Error fetching address:", error);
-    return `Lat: ${lat}, Lng: ${lng}`; // Fallback to coordinates if API fails
-  }
-};
-
-function MapSelector({ onSelectLocation }) {
-  useMapEvents({
-    click(e) {
-      const { lat, lng } = e.latlng;
-      onSelectLocation({ lat, lng });
-    },
-  });
-  return null;
-}
 function RateCalculator({ currentAuth }) {
-  const baseUrl = import.meta.env.VITE_SERVER_URL;
-  const [loading, setLoading] = useState(false);
-  const [isDialogOpen, setDialogOpen] = useState(false);
-  const [form, setForm] = useState({
-    customerId: "",
-    customerName: "",
-    customerEmail: "",
-    customerContact: "",
-    customerImage: "",
-    pickPoint: "",
-    destination: "",
-    orderSchedule: "",
-    paymentMethod: "",
-    total: "",
+  const [from, setFrom] = useState("");
+  const [to, setTo] = useState("");
+  const [containerType, setContainerType] = useState("");
+  const [isExpress, setIsExpress] = useState(false);
+  const [length, setLength] = useState(0);
+  const [width, setWidth] = useState(0);
+  const [height, setHeight] = useState(0);
+  const [actualWeight, setActualWeight] = useState(0);
+  const [hasInsurance, setHasInsurance] = useState(false);
+  const [hasValuation, setHasValuation] = useState(false);
+  const [value, setValue] = useState(0);
+  const [locations, setLocations] = useState([]);
+  const [containerTypes, setContainerTypes] = useState([]);
+  const [calculatedResult, setCalculatedResult] = useState(null);
 
-    tip: "",
-    note: "",
-    distance: "",
-    RatesAndServices: "",
-  });
-  const [itemImage, setItemImage] = useState([]);
-  const [mapType, setMapType] = useState(null); // "pickPoint" or "destination"
-  const [isMapOpen, setIsMapOpen] = useState(false);
+  useEffect(() => {
+    const danaoCityLocations = [
+      "Barangay Suba",
+      "Barangay Taboc",
+      "Barangay Mantuyong",
+      "Barangay Looc",
+      "Barangay Poblacion",
+      "Barangay Guinacot",
+      "Barangay Maslog",
+      "Barangay Cabungahan",
+      "Barangay Sandayong Norte",
+      "Barangay Sandayong Sur",
+      "Barangay Langtad",
+      "Barangay Cahumayan",
+      "Barangay Cagatohan",
+      "Barangay Danasan",
+      "Barangay Santa Rosa",
+      "Barangay Dunga",
+      "Barangay Dungguan",
+      "Barangay Fuga",
+      "Barangay Guinsay",
+      "Barangay Lawaan",
+      "Barangay Licos",
+      "Barangay Magtagobtob",
+      "Barangay Malapoc",
+      "Barangay Manlayag",
+      "Barangay Pili",
+      "Barangay Sabang",
+      "Barangay Sacsac",
+      "Barangay Simala",
+      "Barangay Taytay",
+    ];
+    setLocations(danaoCityLocations);
+    setContainerTypes([
+      { value: "Documents", label: "Documents" },
+      { value: "Pouch", label: "Pouch" },
+      { value: "Box", label: "Box" },
+      { value: "Cargo", label: "Cargo" },
+    ]);
+  }, []);
 
-  const [pickPointCoords, setPickPointCoords] = useState(null);
-  const [destinationCoords, setDestinationCoords] = useState(null);
+  const calculateShippingRate = () => {
+    const volume = (length * width * height) / 3500; // volumetric weight (kg)
+    const chargeableWeight = Math.max(volume, actualWeight / 1000); // in kg
 
-  const handleMapClick = async (coords) => {
-    const address = await convertCoordsToAddress(coords); // Fetch address
+    let baseRate = 182; // base rate for same location
+    if (from !== to) baseRate += 35; // extra for different location
 
-    if (mapType === "pickPoint") {
-      setPickPointCoords(coords);
-      setForm({ ...form, pickPoint: address });
-    } else if (mapType === "destination") {
-      setDestinationCoords(coords);
-      setForm({ ...form, destination: address });
+    switch (containerType) {
+      case "Pouch":
+        baseRate += 10;
+        break;
+      case "Box":
+        baseRate += 20;
+        break;
+      case "Cargo":
+        baseRate += 50;
+        break;
+      default:
+        break;
     }
 
-    setIsMapOpen(false); // Close map modal
-  };
+    // Add weight charge
+    let weightCharge = chargeableWeight * 20;
 
-  const itemImageHandler = (e) => {
-    setItemImage(Array.from(e.target.files));
-  };
+    // Express delivery surcharge
+    const expressCharge = isExpress ? 40 : 0;
 
-  const upload = (e) => {
-    e.preventDefault();
-    setLoading(true);
-    const formData = new FormData();
-    formData.append("customerId", currentAuth.id);
-    formData.append("customerName", currentAuth.fullname);
-    formData.append("customerEmail", currentAuth.email);
-    formData.append("customerImage", currentAuth.image);
-    formData.append("customerContact", currentAuth.phoneNumber);
+    // Insurance
+    const insuranceCharge = hasInsurance ? 25 : 0;
 
-    formData.append("pickPoint", form.pickPoint);
-    formData.append("destination", form.destination);
-    formData.append("distance", form.distance);
-    formData.append("total", form.total);
-    formData.append("paymentMethod", form.paymentMethod);
-    formData.append("orderSchedule", form.orderSchedule);
+    // Valuation
+    const valuationCharge = hasValuation ? value * 0.01 : 0;
 
-    formData.append("tip", form.tip);
-    formData.append("note", form.note);
-    formData.append("RatesAndServices", form.RatesAndServices);
+    const totalPrice =
+      baseRate +
+      weightCharge +
+      expressCharge +
+      insuranceCharge +
+      valuationCharge;
 
-    itemImage.forEach((image, index) => {
-      formData.append(`itemImage`, image);
-    });
-    axios
-      .post(`${baseUrl}/api/addOrders`, formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      })
-      .then((result) => {
-        setForm({
-          customerId: "",
-          customerName: "",
-          customerEmail: "",
-          customerContact: "",
-          pickPoint: "",
-          destination: "",
-          customerImage: "",
-          orderSchedule: "",
-          paymentMethod: "",
-          total: "",
+    const result = {
+      from,
+      to,
+      containerType,
+      isExpress,
+      dimensions: { length, width, height },
+      actualWeight,
+      chargeableWeight,
+      hasInsurance,
+      hasValuation,
+      value,
+      totalPrice: totalPrice.toFixed(2),
+    };
 
-          tip: "",
-          note: "",
-          distance: "",
-          RatesAndServices: "",
-        });
-        if (result.data.message) {
-          toast.success(result.data.message, {
-            position: "top-left",
-          });
-          setDialogOpen(true);
-        }
-        // navigate("/");
-      })
-
-      .catch((err) => {
-        console.log(err);
-        if (err.response && err.response.status === 400) {
-          toast.error(err.response.data.message);
-        } else {
-          toast.error("An unexpected error occurred. Please try again.");
-        }
-      })
-      .finally(() => {
-        setLoading(false); // Reset loading state after the request completes
-      });
-  };
-  const calculateDistanceAndTotal = () => {
-    if (pickPointCoords && destinationCoords) {
-      const R = 6371; // Earth's radius in km
-      const lat1 = (pickPointCoords.lat * Math.PI) / 180;
-      const lat2 = (destinationCoords.lat * Math.PI) / 180;
-      const lon1 = (pickPointCoords.lng * Math.PI) / 180;
-      const lon2 = (destinationCoords.lng * Math.PI) / 180;
-
-      const dLat = lat2 - lat1;
-      const dLon = lon2 - lon1;
-
-      const a =
-        Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-        Math.cos(lat1) *
-          Math.cos(lat2) *
-          Math.sin(dLon / 2) *
-          Math.sin(dLon / 2);
-
-      const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-      const distance = R * c; // Distance in km
-
-      const totalPrice = distance * 10; // Example pricing: $10 per km
-
-      console.log(`Distance: ${distance.toFixed(2)} km`);
-      console.log(`Total Price: ${totalPrice.toFixed(2)}`);
-
-      // Update the form with the total price
-      setForm((prevForm) => ({
-        ...prevForm,
-        total: totalPrice.toFixed(2),
-        distance: distance.toFixed(2),
-      }));
-    } else {
-      toast.error("Please select both pickup and destination points");
-    }
+    setCalculatedResult(result);
   };
 
   return (
-    <div className=" font-poppins grid justify-self-center mb-10">
-      <ToastContainer />
-      <Card className="ssm:w-[350px] lg:w-[400px]">
-        <CardHeader>
-          <CardTitle className="text-center text-[#008000]">
-            Rate Calculator
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          <form onSubmit={upload} className="grid gap-4">
-            <CardFooter className="grid grid-cols-1 space-y-3 justify-center">
-              <div className="form-group">
-                <Input
-                  readOnly
-                  className="tranform transition hover:scale-105 cursor-pointer"
-                  placeholder="Click to select pick-up point"
-                  value={form.pickPoint}
-                  onClick={() => {
-                    setMapType("pickPoint");
-                    setIsMapOpen(true);
-                  }}
-                />
-                <p className="text-left text-[10px] absolute font-quicksand text-gray-900">
-                  Pick up Point.
-                </p>
-              </div>
+    <div className="calculator-container justify-self-center mb-10">
+      <div className="section location">
+        <h3>Tells us about the location.</h3>
+        <div className="input-group">
+          <label>From</label>
+          <select value={from} onChange={(e) => setFrom(e.target.value)}>
+            <option value="">Select location</option>
+            {locations.map((loc) => (
+              <option key={loc} value={loc}>
+                {loc}
+              </option>
+            ))}
+          </select>
+        </div>
+        <div className="input-group">
+          <label>To</label>
+          <select value={to} onChange={(e) => setTo(e.target.value)}>
+            <option value="">Select location</option>
+            {locations.map((loc) => (
+              <option key={loc} value={loc}>
+                {loc}
+              </option>
+            ))}
+          </select>
+        </div>
+      </div>
 
-              <div className="form-group">
-                <Input
-                  readOnly
-                  className="tranform transition hover:scale-105 cursor-pointer"
-                  placeholder="Click to select destination"
-                  value={form.destination}
-                  onClick={() => {
-                    setMapType("destination");
-                    setIsMapOpen(true);
-                  }}
-                />
-                <p className="text-left text-[10px]  font-quicksand text-gray-900">
-                  Drop off Point.
-                </p>
-              </div>
-              <Input
-                readOnly
-                className="border-none hidden"
-                placeholder="Distances"
-                value={`${form.distance} km`}
-                required
-              />
-              <p>{form.distance} km</p>
-              {isMapOpen && (
-                <div className="map-modal z-40">
-                  <MapContainer
-                    center={[10.5417498, 123.9527031]}
-                    zoom={13}
-                    style={{ height: "400px", width: "100%" }}
-                  >
-                    <TileLayer
-                      url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                      attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-                    />
-                    <MapSelector onSelectLocation={handleMapClick} />
-                    {pickPointCoords && (
-                      <Marker
-                        position={[pickPointCoords.lat, pickPointCoords.lng]}
-                      />
-                    )}
-                    {destinationCoords && (
-                      <Marker
-                        position={[
-                          destinationCoords.lat,
-                          destinationCoords.lng,
-                        ]}
-                      />
-                    )}
-                  </MapContainer>
-                  <Button
-                    className="text-center bg-gray-900 text-white w-full"
-                    onClick={() => setIsMapOpen(false)}
-                  >
-                    Close Map
-                  </Button>
-                </div>
-              )}
-              <div className="gap-5 grid grid-cols-2">
-                <Button
-                  onClick={calculateDistanceAndTotal}
-                  required
-                  className="bg-gray-900 text-white transition-transform hover:scale-105"
-                >
-                  Calculate Price
-                </Button>
-                <Input
-                  readOnly
-                  className=""
-                  placeholder="Total Price"
-                  value={`P${form.total}`}
-                  required
-                />
-              </div>
-            </CardFooter>
-          </form>
-        </CardContent>
-      </Card>
+      <div className="section container-details">
+        <h3>Container Type</h3>
+        <div className="input-group">
+          <label>Container Type</label>
+          <select
+            value={containerType}
+            onChange={(e) => setContainerType(e.target.value)}
+          >
+            <option value="">Select type</option>
+            {containerTypes.map((type) => (
+              <option key={type.value} value={type.value}>
+                {type.label}
+              </option>
+            ))}
+          </select>
+        </div>
+        <div className="express-checkbox">
+          <label htmlFor="express">Express</label>
+          <input
+            type="checkbox"
+            id="express"
+            checked={isExpress}
+            onChange={(e) => setIsExpress(e.target.checked)}
+          />
+        </div>
+        <div className="dimensions">
+          <div className="input-group">
+            <label>Length (cm)</label>
+            <input
+              type="number"
+              value={length}
+              onChange={(e) => setLength(+e.target.value)}
+            />
+          </div>
+          <div className="input-group">
+            <label>Width (cm)</label>
+            <input
+              type="number"
+              value={width}
+              onChange={(e) => setWidth(+e.target.value)}
+            />
+          </div>
+          <div className="input-group">
+            <label>Height (cm)</label>
+            <input
+              type="number"
+              value={height}
+              onChange={(e) => setHeight(+e.target.value)}
+            />
+          </div>
+        </div>
+      </div>
+
+      <div className="section weight">
+        <h3>Actual Weight</h3>
+        <div className="input-group">
+          <label>Actual Weight (grams)</label>
+          <input
+            type="number"
+            value={actualWeight}
+            onChange={(e) => setActualWeight(+e.target.value)}
+          />
+        </div>
+      </div>
+
+      <div className="section additional-charges">
+        <h3>Additional charges.</h3>
+        <div className="checkbox-group">
+          <input
+            type="checkbox"
+            checked={hasInsurance}
+            onChange={(e) => setHasInsurance(e.target.checked)}
+          />
+          <label>Insurance</label>
+        </div>
+        <div className="checkbox-group">
+          <input
+            type="checkbox"
+            checked={hasValuation}
+            onChange={(e) => setHasValuation(e.target.checked)}
+          />
+          <label>Valuation</label>
+        </div>
+        <div className="input-group value-input">
+          <label>Item Value (₱)</label>
+          <input
+            type="number"
+            value={value}
+            onChange={(e) => setValue(+e.target.value)}
+          />
+        </div>
+      </div>
+
+      <button className="calculate-button" onClick={calculateShippingRate}>
+        CALCULATE RATE
+      </button>
+
+      {calculatedResult && (
+        <div className="result-display">
+          <h4>Calculation Result:</h4>
+          <ul>
+            <li>
+              <strong>From:</strong> {calculatedResult.from}
+            </li>
+            <li>
+              <strong>To:</strong> {calculatedResult.to}
+            </li>
+            <li>
+              <strong>Container:</strong> {calculatedResult.containerType}
+            </li>
+            <li>
+              <strong>Express:</strong>{" "}
+              {calculatedResult.isExpress ? "Yes" : "No"}
+            </li>
+            <li>
+              <strong>Dimensions:</strong> {calculatedResult.dimensions.length}{" "}
+              x {calculatedResult.dimensions.width} x{" "}
+              {calculatedResult.dimensions.height} cm
+            </li>
+            <li>
+              <strong>Weight:</strong> {calculatedResult.actualWeight} g
+            </li>
+            <li>
+              <strong>Chargeable Weight:</strong>{" "}
+              {calculatedResult.chargeableWeight.toFixed(2)} kg
+            </li>
+            <li>
+              <strong>Insurance:</strong>{" "}
+              {calculatedResult.hasInsurance ? "Yes" : "No"}
+            </li>
+            <li>
+              <strong>Valuation:</strong>{" "}
+              {calculatedResult.hasValuation ? `Yes (₱${value})` : "No"}
+            </li>
+            <li>
+              <strong>Total Price:</strong> ₱{calculatedResult.totalPrice}
+            </li>
+          </ul>
+        </div>
+      )}
     </div>
   );
 }
