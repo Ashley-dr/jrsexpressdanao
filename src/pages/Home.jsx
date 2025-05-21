@@ -97,7 +97,7 @@ function Home({ currentAuth }) {
             ></div>
           </div>
         </section>
-        <section className="p-10 text-center ">
+        <section id="scope" className="p-10 text-center ">
           <div className="grid space-y-10">
             <p className="text-[#008000] text-[30px] font-bold">
               Why Choose JRS Express?
@@ -131,7 +131,7 @@ function Home({ currentAuth }) {
           </div>
         </section>
 
-        <section className="p-10 text-center ">
+        <section id="services" className="p-10 text-center ">
           <div className="grid space-y-10">
             <p className="text-[#008000] text-[30px] font-bold">Our Services</p>
             <div className="grid sm:grid-cols-2 lg:grid-cols-4 justify-items-center items-center gap-10">
@@ -199,7 +199,10 @@ function Home({ currentAuth }) {
           </div>
         </section>
 
-        <div className="text-center mb-20 mt-10 font-poppins flex justify-center items-center space-x-5 ">
+        <div
+          id="rates"
+          className="text-center mb-20 mt-10 font-poppins flex justify-center items-center space-x-5 "
+        >
           {currentAuth && currentAuth.isCourier ? (
             <Link
               to="/CourierPage"
@@ -221,6 +224,7 @@ function Home({ currentAuth }) {
             <></>
           )}
         </div>
+
         <RateCalculator />
       </figure>
     </div>
