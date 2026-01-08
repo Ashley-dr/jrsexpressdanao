@@ -80,14 +80,14 @@ function App() {
         ) : (
           <></>
         )}
-        {/* <Route
+        <Route
           path="/AddOrders"
           element={<AddOrders currentAuth={currentAuth} />}
         />
         <Route
           path="/CurrentOrders"
           element={<CurrentOrders currentAuth={currentAuth} />}
-        /> */}
+        />
 
         <Route
           path="/MapPoint"

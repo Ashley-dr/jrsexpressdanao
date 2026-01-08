@@ -63,26 +63,15 @@ function Home({ currentAuth }) {
                       Get Started
                     </Button>
                   </Link>
-                  {/* <DropdownMenuTrigger asChild> */}
 
-                  {/* </DropdownMenuTrigger> */}
-                  {/* <DropdownMenuContent className="mt-2 space-y-1">
-                    <Link to="/UserSignup">
-                      <DropdownMenuItem>
-                        <Button className="border hover:bg-black hover:text-white">
-                          User Sign up
-                        </Button>
-                      </DropdownMenuItem>
-                    </Link>
-                    <Link to="/CourierSignup">
-                      <DropdownMenuItem>
-                        {" "}
-                        <Button className="border hover:bg-black hover:text-white">
-                          Rider Sign up
-                        </Button>
-                      </DropdownMenuItem>
-                    </Link>
-                  </DropdownMenuContent> */}
+                  <Link to="/CourierSignup">
+                    {/* <DropdownMenuItem> */}
+                    <Button className="border-black  bg-[#01363f] text-white border p-2 rounded-md font-thin text-sm px-3 hover:bg-[#78f3df] hover:text-black">
+                      Rider Sign up
+                    </Button>
+                  </Link>
+                  <DropdownMenuTrigger asChild></DropdownMenuTrigger>
+                  <DropdownMenuContent className="mt-2 space-y-1"></DropdownMenuContent>
                 </DropdownMenu>
               </div>
             )}

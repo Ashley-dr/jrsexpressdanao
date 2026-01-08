@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable no-unused-vars */
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -130,6 +130,21 @@ function AddOrders({ currentAuth }) {
   const itemImageHandler = (e) => {
     setItemImage(Array.from(e.target.files));
   };
+  const [containerType, setContainerType] = useState("");
+  const [isExpress, setIsExpress] = useState(false);
+  const [length, setLength] = useState(0);
+  const [width, setWidth] = useState(0);
+  const [height, setHeight] = useState(0);
+  const [containerTypes, setContainerTypes] = useState([]);
+
+  useEffect(() => {
+    setContainerTypes([
+      { value: "Documents", label: "Documents" },
+      { value: "Pouch", label: "Pouch" },
+      { value: "Box", label: "Box" },
+      { value: "Cargo", label: "Cargo" },
+    ]);
+  }, []);
 
   const upload = (e) => {
     e.preventDefault();
@@ -441,7 +456,57 @@ function AddOrders({ currentAuth }) {
                   Rates and Service.
                 </p>
               </div>
-
+              <div className="section container-details">
+                <div className="input-group">
+                  <label>Container Type</label>
+                  <select
+                    value={containerType}
+                    onChange={(e) => setContainerType(e.target.value)}
+                  >
+                    <option value="">Select type</option>
+                    {containerTypes.map((type) => (
+                      <option key={type.value} value={type.value}>
+                        {type.label}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+                <div className="express-checkbox">
+                  <label htmlFor="express">Express</label>
+                  <input
+                    type="checkbox"
+                    id="express"
+                    checked={isExpress}
+                    onChange={(e) => setIsExpress(e.target.checked)}
+                  />
+                </div>
+                <div className="dimensions">
+                  <div className="input-group">
+                    <label>Length (cm)</label>
+                    <input
+                      type="number"
+                      value={length}
+                      onChange={(e) => setLength(+e.target.value)}
+                    />
+                  </div>
+                  <div className="input-group">
+                    <label>Width (cm)</label>
+                    <input
+                      type="number"
+                      value={width}
+                      onChange={(e) => setWidth(+e.target.value)}
+                    />
+                  </div>
+                  <div className="input-group">
+                    <label>Height (cm)</label>
+                    <input
+                      type="number"
+                      value={height}
+                      onChange={(e) => setHeight(+e.target.value)}
+                    />
+                  </div>
+                </div>
+              </div>
               <div className=" items-center ">
                 <Select
                   onValueChange={(value) =>
